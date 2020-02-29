@@ -1,0 +1,5 @@
+---
+ansible_user: 'vervelak'
+ansible_password: ''
+ansible_sudo_pass: '{{ ansible_password }}'
+ansible_become: True

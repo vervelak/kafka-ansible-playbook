@@ -1,0 +1,39 @@
+---
+# tasks file for common
+- name: Update repository and Upgrade packages
+  apt:
+    upgrade: dist
+    update_cache: yes
+
+- name: Install necessary packages
+  apt:
+    pkg:
+      - htop
+      - screen
+      - tmux
+      - sysstat
+      - etckeeper
+
+- name: Remove useless packages from the cache
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes
+
+- name: Set logging
+  ufw:
+    logging: on
+
+- name: Rate limit connections to SSH port
+  ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+
+- name: Apply default screenrc config
+  template:
+    src: screenrc.j2
+    dest: /etc/screenrc
+

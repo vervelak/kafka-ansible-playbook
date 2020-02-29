@@ -1,0 +1,32 @@
+---
+# tasks file for kafka
+
+- name: Install JRE
+  apt:
+    name: default-jre
+    update_cache: yes
+    state: present
+
+- name: Add kafka user with no shell
+  user:
+    name: kafka
+    shell: /bin/nologin
+    create_home: True
+    system: True
+
+- name: Download Kafka tar.gz
+  get_url:
+    url: https://downloads.apache.org/kafka/{{ kafka_version }}/kafka_2.12-{{ kafka_version }}.tgz
+    dest: /home/kafka/kafka_2.12-{{ kafka_version }}.tgz
+
+- name: Extract Kafka
+  unarchive:
+    src: /home/kafka/kafka_2.12-{{ kafka_version }}.tgz
+    dest: /home/kafka/
+    remote_src: yes
+
+- name: Create Link for kafka
+  file:
+    src: /home/kafka/kafka_2.12-{{ kafka_version }}/
+    dest: /home/kafka/kafka
+    state: link
